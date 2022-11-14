@@ -1,0 +1,11 @@
+.complete {
+    color: green;
+}
+
+.not_complete {
+    color: red;
+}
+
+.expired_deadline {
+    color: red;
+}

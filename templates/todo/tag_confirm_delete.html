@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+  <form method="post" action="">
+    {% csrf_token %}
+    <label>
+      <strong>Confirm tag delete </strong><input type="submit" value="Confirm" class="btn btn-danger" >
+    </label>
+    <a onclick="window.history.back()" class="btn btn-secondary">Back</a>
+  </form>
+{% endblock %}

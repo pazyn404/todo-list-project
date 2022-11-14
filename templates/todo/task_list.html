@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    TODO List
+    <a href="{% url 'todo:task-create' %}" class="btn btn-primary">Add task</a>
+  </h1>
+  <br>
+  {% for task in task_list %}
+    <p>
+      <strong>
+        {{ task.name }}
+        {% if task.status == "Done" %}
+          <span class="complete">{{ task.status }}</span>
+          <a href="{% url 'todo:task-change-status' pk=task.id %}" class="btn btn-secondary btn-sm">Undo</a>
+        {% else %}
+          <span class="not_complete">{{ task.status }}</span>
+          <a href="{% url 'todo:task-change-status' pk=task.id %}" class="btn btn-success btn-sm">Complete</a>
+        {% endif %}
+      </strong>
+    </p>
+    <p>
+      Created at: {{ task.created_at }}
+      {% now "Y-m-d G:i:s" as now %}
+      {% if now > task.deadline|date:"Y-m-d G:i:s" %}
+        <strong class="expired_deadline">Expired deadline:</strong> {{ task.deadline }}
+      {% endif %}
+    </p>
+    <p>
+      Tags:
+      {% for tag in task.tags.all %}
+        {{ tag.name }}
+      {% endfor %}
+    </p>
+    <p>
+      <a href="{% url 'todo:task-update' pk=task.id %}" class="btn btn-warning btn-sm">Update</a>
+      <a href="{% url 'todo:task-delete' pk=task.id %}" class="btn btn-danger btn-sm">Delete</a>
+    </p>
+  {% empty %}
+    <p><strong>There are no tasks.</strong></p>
+  {% endfor %}
+
+{% endblock %}
