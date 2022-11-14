@@ -52,7 +52,10 @@ class Migration(migrations.Migration):
                         max_length=63,
                     ),
                 ),
-                ("tags", models.ManyToManyField(related_name="task", to="todo.tag")),
+                (
+                    "tags",
+                    models.ManyToManyField(related_name="task", to="todo.tag"),
+                ),
             ],
         ),
     ]
