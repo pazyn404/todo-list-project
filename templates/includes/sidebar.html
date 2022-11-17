@@ -1,4 +1,12 @@
-<ul class="sidebar-nav list-group">
-  <li class="list-group-item"><a href="{% url 'todo:task-list' %}">Home</a></li>
+{% if user.is_authenticated %}
+  <li>User: <a href="{% url 'todo:scheduler-update' pk=user.pk %}">{{ user.username }}</a> <a href="{% url 'logout' %}">Logout</a></li>
+  <br>
+  <ul class="sidebar-nav list-group">
+  <li class="list-group-item"><a href="{% url 'todo:index' %}">Home</a></li>
+  <li class="list-group-item"><a href="{% url 'todo:task-list' %}">Tasks</a></li>
   <li class="list-group-item"><a href="{% url 'todo:tag-list' %}">Tags</a></li>
-</ul>
+  </ul>
+{% else %}
+  <li><a href="{% url 'login' %}">Login</a></li>
+{% endif %}
+

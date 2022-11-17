@@ -9,20 +9,19 @@
   {% for task in task_list %}
     <p>
       <strong>
-        {{ task.name }}
-        {% if task.status == "Done" %}
-          <span class="complete">{{ task.status }}</span>
+        <a href="{% url 'todo:task-detail' pk=task.pk %}">{{ task.name }}</a>
+        {% if task.status %}
+          <span class="complete">{{ task.status_display_name }}</span>
           <a href="{% url 'todo:task-change-status' pk=task.id %}" class="btn btn-secondary btn-sm">Undo</a>
         {% else %}
-          <span class="not_complete">{{ task.status }}</span>
+          <span class="not_complete">{{ task.status_display_name }}</span>
           <a href="{% url 'todo:task-change-status' pk=task.id %}" class="btn btn-success btn-sm">Complete</a>
         {% endif %}
       </strong>
     </p>
     <p>
       Created at: {{ task.created_at }}
-      {% now "Y-m-d G:i:s" as now %}
-      {% if now > task.deadline|date:"Y-m-d G:i:s" %}
+      {% if task.deadline_expired %}
         <strong class="expired_deadline">Expired deadline:</strong> {{ task.deadline }}
       {% endif %}
     </p>
