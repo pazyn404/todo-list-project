@@ -2,9 +2,9 @@
 
 {% block content %}
   <h1>Settings</h1>
-  <ul class="list">
-    <li><a href="{% url 'registration:update' pk=user.pk %}" class="list-item btn btn-warning">Change data</a></li>
-    <li><a href="{% url 'registration:password_change' %}" class="list-item btn btn-warning">Change password</a></li>
-    <li><a href="{% url 'registration:delete' pk=user.pk %}" class="list-item btn btn-danger">Delete account</a></li>
+  <ul class="settings-list">
+    <li><a href="{% url 'registration:update' pk=user.pk %}" class="btn btn-warning settings-list-item">Change data</a></li>
+    <li><a href="{% url 'registration:password_change' %}" class="btn btn-warning settings-list-item">Change password</a></li>
+    <li><a href="{% url 'registration:delete' pk=user.pk %}" class="btn btn-danger settings-list-item">Delete account</a></li>
   </ul>
 {% endblock %}

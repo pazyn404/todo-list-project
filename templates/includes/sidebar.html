@@ -1,21 +1,21 @@
 {% if user.is_authenticated %}
   <br>
   <ul class="sidebar-nav list-group">
-    <li class="list-group-item"><strong>User:</strong> {{ user.username }}</li>
-    <li class="list-group-item"><a href="{% url 'registration:logout' %}">Logout</a></li>
+    <li class="list-group-item sidebar-list-item"><strong>User:</strong> {{ user.username }}</li>
+    <li class="list-group-item sidebar-list-item"><a href="{% url 'registration:logout' %}">Logout</a></li>
   </ul>
   <br>
   <ul class="sidebar-nav list-group">
-    <li class="list-group-item"><a href="{% url 'todo:index' %}">Home</a></li>
-    <li class="list-group-item"><a href="{% url 'todo:task-list' %}">Tasks</a></li>
-    <li class="list-group-item"><a href="{% url 'todo:tag-list' %}">Tags</a></li>
-    <li class="list-group-item"><a href="{% url 'registration:settings' %}">Settings</a></li>
+    <li class="list-group-item sidebar-list-item"><a href="{% url 'todo:index' %}">Home</a></li>
+    <li class="list-group-item sidebar-list-item"><a href="{% url 'todo:task-list' %}">Tasks</a></li>
+    <li class="list-group-item sidebar-list-item"><a href="{% url 'todo:tag-list' %}">Tags</a></li>
+    <li class="list-group-item sidebar-list-item"><a href="{% url 'registration:settings' %}">Settings</a></li>
   </ul>
 {% else %}
   <br>
   <ul class="sidebar-nav list-group">
-    <li class="list-group-item"><a href="{% url 'registration:login' %}">Login</a></li>
-    <li class="list-group-item"><a href="{% url 'registration:register' %}">Register</a></li>
+    <li class="list-group-item sidebar-list-item"><a href="{% url 'registration:login' %}">Login</a></li>
+    <li class="list-group-item sidebar-list-item"><a href="{% url 'registration:register' %}">Register</a></li>
   </ul>
   <br>
 {% endif %}

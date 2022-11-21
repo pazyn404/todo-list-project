@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DJANGO_DEBUG", "") == "True"
+DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = ["127.0.0.1", "todo-list-khvs.onrender.com"]
 
@@ -35,7 +35,7 @@ INTERNAL_IPS = ["127.0.0.1"]
 
 AUTH_USER_MODEL = "registration.User"
 
-# Application definition
+# Application definition DATABASE_URL=postgres://wdlkpwjd:eBeR9Q0Aoea7skG-qsNxgOScWG9Mrng-@rosie.db.elephantsql.com/wdlkpwjd;DJANGO_DEBUG=False
 
 INSTALLED_APPS = [
     "django.contrib.admin",
