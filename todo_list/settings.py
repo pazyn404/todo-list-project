@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
+from django.urls import reverse_lazy
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -29,6 +31,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = "registration.User"
 
 # Application definition
 
@@ -40,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "crispy_forms",
+    "registration",
     "todo",
 ]
 
@@ -55,7 +59,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "todo_list.urls"
 
-# AUTH_USER_MODEL = "todo."
 
 TEMPLATES = [
     {
@@ -106,7 +109,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -116,7 +118,13 @@ TIME_ZONE = "Europe/Kiev"
 
 USE_I18N = True
 
-USE_TZ = False
+USE_TZ = True
+
+LOGIN_URL = reverse_lazy("registration:login")
+
+LOGIN_REDIRECT_URL = "/"
+
+LOGOUT_REDIRECT_URL = reverse_lazy("registration:login")
 
 
 # Static files (CSS, JavaScript, Images)

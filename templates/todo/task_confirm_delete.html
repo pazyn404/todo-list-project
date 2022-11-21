@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 
-
 {% block content %}
-  <p method="post" action="">
+  <form method="post" action="">
     {% csrf_token %}
     <p>
       <strong>Confirm task delete</strong>

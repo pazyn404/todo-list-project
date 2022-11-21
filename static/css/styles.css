@@ -1,11 +1,16 @@
-.complete {
-    color: green;
-}
-
-.not_complete {
-    color: red;
-}
 
 .expired_deadline {
     color: red;
+}
+
+.settings {
+    padding-top: 50px;
+}
+
+.list-item {
+    margin: 5px;
+}
+
+label {
+    display: block;
 }

@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h3>{{ tag.name }} details</h3>
+  <p><strong>Created at:</strong> {{ tag.created_at }}</p>
+  <p><strong>Tasks count usage:</strong> {{ tag.tasks.count }}</p>
+{% endblock %}

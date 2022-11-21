@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+
+{% block content %}
+  <p>Please, enter password to delete account permanently?</p>
+  <form method="post" action="{% url 'registration:confirm-deletion' pk=user.pk %}">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <label>
+      Password: <input type="password" name="password">
+    </label>
+    {% if password_error %}
+      <p>{{ password_error }}</p>
+    {% endif %}
+    <input type="submit" value="Confirm" class="btn btn-danger">
+    <a onclick="window.history.back()" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}

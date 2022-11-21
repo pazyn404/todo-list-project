@@ -1,22 +1,35 @@
+from math import ceil
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Count, Q
-from django.http import HttpResponseRedirect, HttpRequest, HttpResponse
-from django.shortcuts import render
-from django.urls import reverse_lazy, reverse
+from django.db.models import Q
+from django.http import (
+    HttpResponseRedirect,
+    HttpRequest,
+    HttpResponse,
+    Http404,
+)
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 from django.views import generic
 
-from todo.forms import TaskForm
-from todo.models import Tag, Task, Scheduler
+from todo.forms import TaskForm, TagForm, TaskSearchForm, TagSearchForm
+from todo.mixins import (
+    TagVerifyUrlDataMixin,
+    TaskVerifyUrlDataMixin,
+    FormKwargsMixin,
+    FormValidMixin,
+)
+from todo.models import Tag, Task
+
 
 @login_required
 def index_view(request: HttpRequest) -> HttpResponse:
-    finished_tasks_count = Count("Task", filter=Q(task__schedulers=request.user) & Q(status=True))
-    not_finished_tasks_count = Count("Task", filter=Q(task__schedulers=request.user) & Q(status=False))
+    tasks = Task.objects.filter(Q(user_id=request.user.id) & Q(status=True))
+    finished_tasks_count = tasks.count()
 
     context = {
         "finished_tasks_count": finished_tasks_count,
-        "not_finished_tasks_count": not_finished_tasks_count,
     }
 
     return render(request, "todo/index.html", context=context)
@@ -24,65 +37,163 @@ def index_view(request: HttpRequest) -> HttpResponse:
 
 class TagListView(LoginRequiredMixin, generic.ListView):
     model = Tag
-    paginate_by = 5
-    queryset = Tag.objects.all()
+    paginate_by = 10
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["search_form"] = TagSearchForm()
+        return context
+
+    def get_queryset(self):
+        queryset = Tag.objects.filter(user_id=self.request.user.id).order_by(
+            "-created_at"
+        )
+
+        form = TaskSearchForm(self.request.GET)
+
+        if form.is_valid():
+            return queryset.filter(name__icontains=form.cleaned_data["name"])
+
+        return queryset
 
 
-class TagCreateView(LoginRequiredMixin, generic.CreateView):
+class TagDetailView(
+    LoginRequiredMixin, TagVerifyUrlDataMixin, generic.DetailView
+):
     model = Tag
-    fields = "__all__"
-    success_url = reverse_lazy("todo:tag-list")
 
 
-class TagUpdateView(LoginRequiredMixin, generic.UpdateView):
+class TagCreateView(
+    LoginRequiredMixin, FormKwargsMixin, FormValidMixin, generic.CreateView
+):
     model = Tag
-    fields = "__all__"
-    success_url = reverse_lazy("todo:tag-list")
+    form_class = TagForm
+
+    def get_success_url(self):
+        return f"{reverse('todo:tag-list')}?page={self.request.GET['page']}"
 
 
-class TagDeleteView(LoginRequiredMixin, generic.DeleteView):
+class TagUpdateView(
+    LoginRequiredMixin,
+    TagVerifyUrlDataMixin,
+    FormKwargsMixin,
+    generic.UpdateView,
+):
     model = Tag
-    success_url = reverse_lazy("todo:tag-list")
+    form_class = TagForm
+
+    def get_success_url(self):
+        return f"{reverse('todo:tag-list')}?page={self.request.GET['page']}"
+
+
+class TagDeleteView(
+    LoginRequiredMixin, TagVerifyUrlDataMixin, generic.DeleteView
+):
+    model = Tag
+
+    def get_success_url(self):
+        page = int(self.request.GET["page"])
+        count = int(self.request.GET["count"])
+        per_page = int(self.request.GET["per_page"])
+
+        count -= 1
+        if ceil(count / per_page) != page:
+            page = max(page - 1, 1)
+
+        return f"{reverse('todo:tag-list')}?page={page}"
 
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
-    paginate_by = 4
-    queryset = Task.objects.prefetch_related("tags")
+    paginate_by = 5
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["search_form"] = TaskSearchForm()
+        return context
+
+    def get_queryset(self):
+        queryset = Task.objects.filter(user_id=self.request.user.id).order_by(
+            "-pinned", "-priority", "deadline"
+        )
+
+        form = TaskSearchForm(self.request.GET)
+
+        if form.is_valid():
+            return queryset.filter(name__icontains=form.cleaned_data["name"])
+
+        return queryset
 
 
-class TaskDetailView(LoginRequiredMixin, generic.DetailView):
+class TaskDetailView(
+    LoginRequiredMixin, TaskVerifyUrlDataMixin, generic.DetailView
+):
     model = Task
-    queryset = Task.objects.prefetch_related("tags")
 
 
-class TaskCreateView(LoginRequiredMixin, generic.CreateView):
+class TaskCreateView(
+    LoginRequiredMixin, FormKwargsMixin, FormValidMixin, generic.CreateView
+):
     model = Task
     form_class = TaskForm
-    success_url = reverse_lazy("todo:task-list")
+
+    def get_success_url(self):
+        return f"{reverse('todo:task-list')}?page={self.request.GET['page']}"
 
 
-class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
+class TaskUpdateView(
+    LoginRequiredMixin,
+    TaskVerifyUrlDataMixin,
+    FormKwargsMixin,
+    generic.UpdateView,
+):
     model = Task
     form_class = TaskForm
-    success_url = reverse_lazy("todo:task-list")
+
+    def get_success_url(self):
+        return f"{reverse('todo:task-list')}?page={self.request.GET['page']}"
 
 
-class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
+class TaskDeleteView(
+    LoginRequiredMixin, TaskVerifyUrlDataMixin, generic.DeleteView
+):
     model = Task
-    success_url = reverse_lazy("todo:task-list")
+
+    def get_success_url(self):
+        page = int(self.request.GET["page"])
+        count = int(self.request.GET["count"])
+        per_page = int(self.request.GET["per_page"])
+
+        count -= 1
+        if ceil(count / per_page) != page:
+            page = max(page - 1, 1)
+
+        return f"{reverse('todo:task-list')}?page={page}"
 
 
-class SchedulerUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = Scheduler
-    fields = "__all__"
-    success_url = reverse_lazy("todo:index")
+def change_status_view(request, pk: int):
+    task = get_object_or_404(Task, pk=pk)
 
+    if task.user_id != request.user.id:
+        raise Http404()
 
-@login_required
-def change_status_view(request: HttpRequest, pk: int) -> HttpResponseRedirect:
-    task = Task.objects.get(pk=pk)
     task.status = not task.status
     task.save()
 
-    return HttpResponseRedirect(reverse("todo:task-list"))
+    return HttpResponseRedirect(
+        f"{reverse('todo:task-list')}?page={request.GET.get('page', 1)}"
+    )
+
+
+def switch_pinned_view(request, pk: int):
+    task = get_object_or_404(Task, pk=pk)
+
+    if task.user_id != request.user.id:
+        raise Http404()
+
+    task.pinned = not task.pinned
+    task.save()
+
+    return HttpResponseRedirect(
+        f"{reverse('todo:task-list')}?page={request.GET.get('page', 1)}"
+    )
