@@ -134,8 +134,8 @@ class TaskDetailView(
 class TaskCreateView(
     LoginRequiredMixin, FormKwargsMixin, FormValidMixin, generic.CreateView
 ):
-    model = Task
     form_class = TaskForm
+    template_name = "todo/task_form.html"
 
     def get_success_url(self):
         return f"{reverse('todo:task-list')}?page={self.request.GET['page']}"
