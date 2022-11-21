@@ -31,6 +31,8 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "") == "True"
 
 ALLOWED_HOSTS = ["127.0.0.1"]
 
+INTERNAL_IPS = ["127.0.0.1"]
+
 AUTH_USER_MODEL = "registration.User"
 
 # Application definition
