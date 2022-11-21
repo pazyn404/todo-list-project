@@ -1,7 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.db.models import Q
-from django.forms import HiddenInput
 
 from todo.models import Task, Tag
 
@@ -25,12 +24,15 @@ class TagForm(forms.ModelForm):
 
 
 class TagSearchForm(forms.Form):
-    name = forms.CharField(
-        max_length=255,
-        required=False,
-        label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search by name"}),
-    )
+    def __init__(self, *args, **kwargs):
+        name = kwargs.pop("name", "")
+        super().__init__(*args, **kwargs)
+        self.fields["name"] = forms.CharField(
+            max_length=255,
+            required=False,
+            label="",
+            widget=forms.TextInput(attrs={"placeholder": name or "Search by name"}),
+        )
 
 
 class TaskForm(forms.ModelForm):
@@ -54,9 +56,12 @@ class TaskForm(forms.ModelForm):
 
 
 class TaskSearchForm(forms.Form):
-    name = forms.CharField(
-        max_length=255,
-        required=False,
-        label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search by name"}),
-    )
+    def __init__(self, *args, **kwargs):
+        name = kwargs.pop("name", "")
+        super().__init__(*args, **kwargs)
+        self.fields["name"] = forms.CharField(
+            max_length=255,
+            required=False,
+            label="",
+            widget=forms.TextInput(attrs={"placeholder": name or "Search by name"}),
+        )

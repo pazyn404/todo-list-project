@@ -1,16 +1,41 @@
 
-.expired_deadline {
-    color: red;
-}
-
-.settings {
-    padding-top: 50px;
-}
-
-.list-item {
-    margin: 5px;
+body{
+    background-image: url("/static/images/background.jpg");
 }
 
 label {
     display: block;
 }
+
+.content {
+    padding-top: 15px;
+}
+
+.btn-mini {
+    width: 80px;
+    height: 30px;
+    font-size: 10px;
+    font-size-adjust: initial;
+    font-weight: bold;
+}
+
+.list {
+    position:relative;
+    list-style: none;
+    left: -30px;
+}
+
+.list-item {
+    margin-top: 5px;
+}
+
+.expired_deadline {
+    color: red;
+}
+
+.ul_test {
+    width: fit-content;
+    height: fit-content;
+}
+
+
