@@ -14,41 +14,41 @@
   </form>
   <br>
   {% if task_list %}
-    {% for task in task_list %}
-      <ul class="list-group ul_test">
-        <li class="list-group-item">
+    <ul class="list-group">
+      {% for task in task_list %}
+          <li class="list-group-item task-list-item">
 
-          <p>
-            <a href="{% url 'todo:task-detail' pk=task.pk %}">{{ task.name }}</a>
+            <p>
+              <a href="{% url 'todo:task-detail' pk=task.pk %}"><strong>{{ task.name }}</strong></a>
 
-            {% if task.status %}
-              <a href="{% url 'todo:task-change-status' pk=task.pk %}?name={{ request.GET.name }}&page={{ page_obj.number }}" class="btn btn-mini btn-success">{{ task.status_display_name }}</a>
-            {% else %}
-              <a href="{% url 'todo:task-change-status' pk=task.pk %}?name={{ request.GET.name }}&page={{ page_obj.number }}" class="btn btn-mini btn-secondary">{{ task.status_display_name }}</a>
-            {% endif %}
+              {% if task.status %}
+                <a href="{% url 'todo:task-change-status' pk=task.pk %}?name={{ request.GET.name }}&page={{ page_obj.number }}" class="btn btn-sm btn-success">{{ task.status_display_name }}</a>
+              {% else %}
+                <a href="{% url 'todo:task-change-status' pk=task.pk %}?name={{ request.GET.name }}&page={{ page_obj.number }}" class="btn btn-sm btn-secondary">{{ task.status_display_name }}</a>
+              {% endif %}
 
-            {% if task.pinned %}
-              <a href="{% url 'todo:task-switch-pinned' pk=task.pk %}?name={{ request.GET.name }}&page={{ page_obj.number }}" class="btn btn-mini btn-secondary">Unpin</a>
-            {% else %}
-              <a href="{% url 'todo:task-switch-pinned' pk=task.pk %}?name={{ request.GET.name }}&page={{ page_obj.number }}" class="btn btn-mini btn-secondary">Pin</a>
-            {% endif %}
-            <a href="{% url 'todo:task-update' pk=task.pk %}?name={{ request.GET.name }}&page={{ page_obj.number }}" class="btn btn-mini btn-warning">Update</a>
-            <a href="{% url 'todo:task-delete' pk=task.pk %}?name={{ request.GET.name }}&page={{ page_obj.number }}&count={{ page_obj.paginator.count }}&per_page={{ page_obj.paginator.per_page }}" class="btn btn-mini btn-danger">Delete</a>
-          </p>
+              {% if task.pinned %}
+                <a href="{% url 'todo:task-switch-pinned' pk=task.pk %}?name={{ request.GET.name }}&page={{ page_obj.number }}" class="btn btn-sm btn-secondary">Unpin</a>
+              {% else %}
+                <a href="{% url 'todo:task-switch-pinned' pk=task.pk %}?name={{ request.GET.name }}&page={{ page_obj.number }}" class="btn btn-sm btn-secondary">Pin</a>
+              {% endif %}
+              <a href="{% url 'todo:task-update' pk=task.pk %}?name={{ request.GET.name }}&page={{ page_obj.number }}" class="btn btn-sm btn-warning">Update</a>
+              <a href="{% url 'todo:task-delete' pk=task.pk %}?name={{ request.GET.name }}&page={{ page_obj.number }}&count={{ page_obj.paginator.count }}&per_page={{ page_obj.paginator.per_page }}" class="btn btn-sm btn-danger">Delete</a>
+            </p>
 
-          <p>
-            Priority: {{ task.priority_display_name }}
+            <p>
+              <strong>Priority:</strong> {{ task.priority_display_name }}
 
-            {% if not task.status and task.deadline_expired %}
-              <span class="expired_deadline">Expired deadline: </span>{{ task.deadline }}
-            {% endif %}
-          </p>
+              {% if not task.status and task.deadline_expired %}
+                <strong class="expired_deadline">Expired deadline: </strong>{{ task.deadline }}
+              {% endif %}
+            </p>
 
-        </li>
-      </ul>
-    {% endfor %}
+          </li>
+      {% endfor %}
+    </ul>
   {% else %}
-    <p>No tasks, add new one!</p>
+    <p><strong>No tasks, add new one!</strong></p>
   {% endif %}
 
 {% endblock %}

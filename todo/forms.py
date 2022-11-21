@@ -32,7 +32,7 @@ class TagSearchForm(forms.Form):
             required=False,
             label="",
             widget=forms.TextInput(
-                attrs={"placeholder": name or "Search by name"}
+                attrs={"placeholder": "Search by name", "value": name}
             ),
         )
 
@@ -66,6 +66,6 @@ class TaskSearchForm(forms.Form):
             required=False,
             label="",
             widget=forms.TextInput(
-                attrs={"placeholder": name or "Search by name"}
+                attrs={"placeholder": "Search by name", "value": name}
             ),
         )
