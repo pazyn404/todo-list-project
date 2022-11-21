@@ -1,5 +1,9 @@
 {% if user.is_authenticated %}
-  <h5>User: {{ user.username }} <a href="{% url 'registration:logout' %}">Logout</a></h5>
+  <br>
+  <ul class="sidebar-nav list-group">
+    <li class="list-group-item"><strong>User:</strong> {{ user.username }}</li>
+    <li class="list-group-item"><a href="{% url 'registration:logout' %}">Logout</a></li>
+  </ul>
   <br>
   <ul class="sidebar-nav list-group">
     <li class="list-group-item"><a href="{% url 'todo:index' %}">Home</a></li>
@@ -8,7 +12,11 @@
     <li class="list-group-item"><a href="{% url 'registration:settings' %}">Settings</a></li>
   </ul>
 {% else %}
-  <li><a href="{% url 'registration:login' %}">Login</a></li>
-  <li><a href="{% url 'registration:register' %}">Register</a></li>
+  <br>
+  <ul class="sidebar-nav list-group">
+    <li class="list-group-item"><a href="{% url 'registration:login' %}">Login</a></li>
+    <li class="list-group-item"><a href="{% url 'registration:register' %}">Register</a></li>
+  </ul>
+  <br>
 {% endif %}
 

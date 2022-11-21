@@ -41,7 +41,7 @@ class TagListView(LoginRequiredMixin, generic.ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["search_form"] = TagSearchForm()
+        context["search_form"] = TagSearchForm(name=self.request.GET.get("name", ""))
         return context
 
     def get_queryset(self):
@@ -66,11 +66,11 @@ class TagDetailView(
 class TagCreateView(
     LoginRequiredMixin, FormKwargsMixin, FormValidMixin, generic.CreateView
 ):
-    model = Tag
     form_class = TagForm
+    template_name = "todo/tag_form.html"
 
     def get_success_url(self):
-        return f"{reverse('todo:tag-list')}?page={self.request.GET['page']}"
+        return f"{reverse('todo:tag-list')}?name={self.request.GET.get('name', '')}&page={self.request.GET.get('page', 1)}"
 
 
 class TagUpdateView(
@@ -83,7 +83,7 @@ class TagUpdateView(
     form_class = TagForm
 
     def get_success_url(self):
-        return f"{reverse('todo:tag-list')}?page={self.request.GET['page']}"
+        return f"{reverse('todo:tag-list')}?name={self.request.GET.get('name', '')}&page={self.request.GET.get('page', 1)}"
 
 
 class TagDeleteView(
@@ -100,7 +100,7 @@ class TagDeleteView(
         if ceil(count / per_page) != page:
             page = max(page - 1, 1)
 
-        return f"{reverse('todo:tag-list')}?page={page}"
+        return f"{reverse('todo:tag-list')}?name={self.request.GET.get('name', '')}&page={page}"
 
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
@@ -109,7 +109,7 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["search_form"] = TaskSearchForm()
+        context["search_form"] = TaskSearchForm(name=self.request.GET.get("name", ""))
         return context
 
     def get_queryset(self):
@@ -138,7 +138,7 @@ class TaskCreateView(
     template_name = "todo/task_form.html"
 
     def get_success_url(self):
-        return f"{reverse('todo:task-list')}?page={self.request.GET['page']}"
+        return f"{reverse('todo:task-list')}?name={self.request.GET.get('name', '')}&page={self.request.GET['page']}"
 
 
 class TaskUpdateView(
@@ -151,7 +151,7 @@ class TaskUpdateView(
     form_class = TaskForm
 
     def get_success_url(self):
-        return f"{reverse('todo:task-list')}?page={self.request.GET['page']}"
+        return f"{reverse('todo:task-list')}?name={self.request.GET.get('name', '')}&page={self.request.GET['page']}"
 
 
 class TaskDeleteView(
@@ -168,7 +168,7 @@ class TaskDeleteView(
         if ceil(count / per_page) != page:
             page = max(page - 1, 1)
 
-        return f"{reverse('todo:task-list')}?page={page}"
+        return f"{reverse('todo:task-list')}?name={self.request.GET.get('name', '')}&page={page}"
 
 
 def change_status_view(request, pk: int):
@@ -181,7 +181,7 @@ def change_status_view(request, pk: int):
     task.save()
 
     return HttpResponseRedirect(
-        f"{reverse('todo:task-list')}?page={request.GET.get('page', 1)}"
+        f"{reverse('todo:task-list')}?name={request.GET.get('name', '')}&page={request.GET.get('page', 1)}"
     )
 
 
@@ -195,5 +195,5 @@ def switch_pinned_view(request, pk: int):
     task.save()
 
     return HttpResponseRedirect(
-        f"{reverse('todo:task-list')}?page={request.GET.get('page', 1)}"
+        f"{reverse('todo:task-list')}?name={request.GET.get('name', '')}&page={request.GET.get('page', 1)}"
     )

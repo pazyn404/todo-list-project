@@ -4,7 +4,7 @@
 {% block content %}
   <h1>
     Tag List
-    <a href="{% url 'todo:tag-create' %}?page={{ page_obj.number }}" class="btn btn-primary">Add tag</a>
+    <a href="{% url 'todo:tag-create' %}?name={{ request.GET.name }}&page={{ page_obj.number }}" class="btn btn-primary">Add tag</a>
   </h1>
   <br>
   <form action="" method="get" class="form-inline">
@@ -22,8 +22,8 @@
     {% for tag in tag_list %}
       <tr>
         <td><a href = "{% url 'todo:tag-detail' pk=tag.pk %}">{{ tag.name }}</a></td>
-        <td><a href="{% url 'todo:tag-update' pk=tag.pk %}?page={{ page_obj.number }}" class="btn btn-warning">Update</a></td>
-        <td><a href="{% url 'todo:tag-delete' pk=tag.pk %}?page={{ page_obj.number }}&count={{ page_obj.paginator.count }}&per_page={{ page_obj.paginator.per_page }}" class="btn btn-danger">Delete</a></td>
+        <td><a href="{% url 'todo:tag-update' pk=tag.pk %}?name={{ request.GET.name }}&page={{ page_obj.number }}" class="btn btn-warning">Update</a></td>
+        <td><a href="{% url 'todo:tag-delete' pk=tag.pk %}?name={{ request.GET.name }}&page={{ page_obj.number }}&count={{ page_obj.paginator.count }}&per_page={{ page_obj.paginator.per_page }}" class="btn btn-danger">Delete</a></td>
       </tr>
     {% endfor %}
     </table>
