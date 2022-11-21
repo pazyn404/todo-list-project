@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+
+{% block content %}
+  <h1>
+    TODO List
+    <a href="{% url 'todo:task-create' %}?page={{ page_obj.number }}" class="btn btn-primary">Add task</a>
+  </h1>
+  <br>
+  <form action="" method="get" class="form-inline">
+    {{ search_form | crispy }}
+    <input type="submit" value="🚀" class="btn">
+  </form>
+  <br>
+  {% if task_list %}
+    {% for task in task_list %}
+      <ul>
+        <li>
+
+          <p>
+            <a href="{% url 'todo:task-detail' pk=task.pk %}">{{ task.name }}</a>
+
+            {% if task.status %}
+              <a href="{% url 'todo:task-change-status' pk=task.pk %}?page={{ page_obj.number }}" class="btn btn-success btn-sm">{{ task.status_display_name }}</a>
+            {% else %}
+              <a href="{% url 'todo:task-change-status' pk=task.pk %}?page={{ page_obj.number }}" class="btn btn-secondary btn-sm">{{ task.status_display_name }}</a>
+            {% endif %}
+
+            {% if task.pinned %}
+              <a href="{% url 'todo:task-switch-pinned' pk=task.pk %}?page={{ page_obj.number }}" class="btn btn-secondary btn-sm">Unpin</a>
+            {% else %}
+              <a href="{% url 'todo:task-switch-pinned' pk=task.pk %}?page={{ page_obj.number }}" class="btn btn-secondary btn-sm">Pin</a>
+            {% endif %}
+          </p>
+
+          <p>
+            Priority: {{ task.priority_display_name }}
+
+            {% if not task.status and task.deadline_expired %}
+              <span class="expired_deadline">Expired deadline: </span>{{ task.deadline }}
+            {% endif %}
+          </p>
+
+          <p>
+            <a href="{% url 'todo:task-update' pk=task.pk %}?page={{ page_obj.number }}" class="btn btn-warning btn-sm">Update</a>
+            <a href="{% url 'todo:task-delete' pk=task.pk %}?page={{ page_obj.number }}&count={{ page_obj.paginator.count }}&per_page={{ page_obj.paginator.per_page }}" class="btn btn-danger btn-sm">Delete</a>
+          </p>
+
+        </li>
+      </ul>
+    {% endfor %}
+  {% else %}
+    <p>No tasks, add new one!</p>
+  {% endif %}
+
+{% endblock %}
