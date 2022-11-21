@@ -6,7 +6,7 @@ from todo.models import Tag, Task
 
 class TagVerifyUrlDataMixin:
     def get(self, request, *args, **kwargs):
-        if get_object_or_404(Tag, pk=kwargs["pk"]).user_id != request.user.pk:
+        if get_object_or_404(Tag, pk=kwargs["pk"]).user_id != request.user.id:
             raise Http404()
 
         return super().get(request, *args, **kwargs)
@@ -14,7 +14,7 @@ class TagVerifyUrlDataMixin:
 
 class TaskVerifyUrlDataMixin:
     def get(self, request, *args, **kwargs):
-        if get_object_or_404(Task, pk=kwargs["pk"]).user_id != request.user.pk:
+        if get_object_or_404(Task, pk=kwargs["pk"]).user_id != request.user.id:
             raise Http404()
 
         return super().get(request, *args, **kwargs)
