@@ -35,7 +35,7 @@ INTERNAL_IPS = ["127.0.0.1"]
 
 AUTH_USER_MODEL = "registration.User"
 
-# Application definition DATABASE_URL=postgres://wdlkpwjd:eBeR9Q0Aoea7skG-qsNxgOScWG9Mrng-@rosie.db.elephantsql.com/wdlkpwjd;DJANGO_DEBUG=False
+# Application definition
 
 INSTALLED_APPS = [
     "django.contrib.admin",
