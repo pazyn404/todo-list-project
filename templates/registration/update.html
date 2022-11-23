@@ -10,17 +10,17 @@
 
     <div class="item-container">
       <label class="label">Username</label>
-      <input type="text" name="username" class="text" required>
+      <input type="text" name="username" value="{{ user.username }}" class="text" required>
     </div>
 
     <div class="item-container">
       <label class="label">First name</label>
-      <input type="text" name="first_name" class="text" required>
+      <input type="text" name="first_name" value="{{ user.first_name }}" class="text" required>
     </div>
 
     <div class="item-container">
       <label class="label">Last name</label>
-      <input type="text" name="last_name" class="text" required>
+      <input type="text" name="last_name" value="{{ user.last_name }}" class="text" required>
     </div>
 
     {% for error in form.errors.values %}
