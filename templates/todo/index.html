@@ -1,7 +1,18 @@
 {% extends "base.html" %}
 
+
 {% block content %}
+
   <h1>Home page:</h1>
+
+  {% if num_visits == 1 %}
+    <h3>Hi, {{ user.first_name }}!</h3>
+  {% else %}
+    <h3>Welcome back, {{ user.first_name }}!</h3>
+  {% endif %}
+
+  <br>
+
   {% if finished_tasks_count > 1 %}
     <h3>You have already {{ finished_tasks_count }} finished tasks!</h3>
   {% elif finished_tasks_count == 1 %}
@@ -9,4 +20,6 @@
   {% else %}
     <h3>You have no finished task yet, fix it!</h3>
   {% endif %}
+
+
 {% endblock %}

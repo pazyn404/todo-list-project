@@ -1,12 +1,59 @@
 {% extends "base.html" %}
-{% load crispy_forms_filters %}
+
 
 {% block content %}
   <h1>{{ object|yesno:"Update,Create" }} task</h1>
 
   <form method="post" action="">
     {% csrf_token %}
-    {{ form|crispy }}
-    <input type="submit" value="{{ object|yesno:"Update,Create" }}">
+
+    <div class="item-container">
+      <label class="label">Name</label>
+      <input type="text" name="name" value="{{ form.fields.name.value }}" class="text" required>
+    </div>
+
+    <div class="item-container">
+      <label class="label">Deadline</label>
+      <input type="datetime-local" name="deadline" value="{{ form.fields.deadline.value }}" class="datetime" required>
+      <span class="validation-error">{{ form.errors.deadline }}</span>
+    </div>
+
+    <div class="item-container">
+      <label class="label">Description</label>
+      <textarea name="description" placeholder="Description is not provided" class="textarea">{{ form.fields.description.value }}</textarea>
+    </div>
+
+    <div class="item-container">
+      <label class="label">Priority</label>
+
+      <select name="priority" class="select" required>
+        {% for priority in form.fields.priority.choices %}
+          {% if priority.0 == form.fields.priority.value %}
+            <option value="{{ priority.0 }}" selected>{{ priority.1 }}</option>
+          {% else %}
+            <option value="{{ priority.0 }}">{{ priority.1 }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+
+    </div>
+    {% if form.fields.tags.queryset.all %}
+      <div class="item-container">
+        <label class="label">Tags</label>
+
+        <select name="tags" class="select" multiple>
+          {% for tag in form.fields.tags.queryset.all %}
+            {% if tag.id in form.fields.tags.values %}
+              <option value="{{ tag.id }}" selected>{{ tag }}</option>
+            {% else %}
+              <option value="{{ tag.id }}">{{ tag }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+
+      </div>
+    {% endif %}
+
+    <input type="submit" value="{{ object|yesno:"Update,Create" }}" class="btn btn-success">
   </form>
 {% endblock %}

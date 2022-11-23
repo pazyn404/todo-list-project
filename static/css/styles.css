@@ -1,50 +1,14 @@
-body{
+html {
+    align-content: center;
+}
+
+body {
     background-image: url("/static/images/background.jpg");
-}
-
-label {
-    display: block;
-}
-
-.sidebar-list-item {
-    background-color: #FAF0E6;
+    align-content: center;
+    align-items: center;
 }
 
 .content {
     padding-top: 15px;
 }
 
-.settings-list {
-    position:relative;
-    list-style: none;
-    left: -30px;
-}
-
-.settings-list-item {
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
-
-.task-list-item {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    width: fit-content;
-    height: fit-content;
-    border-radius: 10px;
-    background-color: #E0FFFF;
-}
-
-.tag-list-item {
-    margin-top: 2px;
-    margin-bottom: 2px;
-    width: fit-content;
-    height: fit-content;
-    border-radius: 10px;
-    background-color: #E0FFFF;
-}
-
-
-.expired_deadline {
-    color: red;
-}

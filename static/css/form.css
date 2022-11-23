@@ -1,0 +1,43 @@
+.text, .textarea, .datetime, .select {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    width: 200px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: #E0FFFF;
+}
+
+.textarea {
+    height: 100px;
+}
+
+.select {
+    height: fit-content;
+}
+
+
+.item-container {
+
+}
+
+.label {
+    font-weight: bolder;
+}
+
+.btn-search {
+    width: 35px;
+    height: 30px;
+}
+
+.validation-error {
+    display: block;
+    color: #CC3434;
+}
+
+
+
+
+
+

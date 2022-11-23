@@ -11,7 +11,6 @@ from todo_list import settings
 class Tag(models.Model):
     user = models.ForeignKey(
         "registration.User",
-        null=True,
         related_name="tags",
         on_delete=models.CASCADE,
     )
