@@ -1,11 +1,12 @@
-html {
-    align-content: center;
-}
-
 body {
     background-image: url("/static/images/background.jpg");
-    align-content: center;
-    align-items: center;
+}
+
+footer {
+    position: fixed;
+    bottom: 20px;
+    margin-left: 40%;
+    max-width: 20%;
 }
 
 .center {

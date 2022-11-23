@@ -5,7 +5,7 @@
 
 {% if user.is_authenticated %}
   <br>
-  <ul class="sidebar-nav list-group">
+  <ul class="sidebar-nav list-group sidebar">
     <li class="list-group-item sidebar-list-item"><strong>User:</strong> {{ user.username }}</li>
     <li class="list-group-item sidebar-list-item"><a href="{% url 'registration:logout' %}">Logout</a></li>
   </ul>
@@ -18,7 +18,7 @@
   </ul>
 {% else %}
   <br>
-  <ul class="sidebar-nav list-group">
+  <ul class="sidebar-nav list-group sidebar">
     <li class="list-group-item sidebar-list-item"><a href="{% url 'registration:login' %}">Login</a></li>
     <li class="list-group-item sidebar-list-item"><a href="{% url 'registration:register' %}">Register</a></li>
   </ul>
