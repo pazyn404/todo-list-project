@@ -14,10 +14,13 @@ from todo.views import (
     TaskDetailView,
     change_status_view,
     switch_pinned_view,
+    about_view,
 )
 
 urlpatterns = [
     path("", index_view, name="index"),
+    path("about/", about_view, name="about"),
+
     path("tags/", TagListView.as_view(), name="tag-list"),
     path("tags/<int:pk>/", TagDetailView.as_view(), name="tag-detail"),
     path("tags/create/", TagCreateView.as_view(), name="tag-create"),

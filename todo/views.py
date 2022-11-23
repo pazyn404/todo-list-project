@@ -38,9 +38,13 @@ def index_view(request: HttpRequest) -> HttpResponse:
     return render(request, "todo/index.html", context=context)
 
 
+def about_view(request: HttpRequest) -> HttpResponse:
+    return render(request, "footer/about.html")
+
+
 class TagListView(LoginRequiredMixin, generic.ListView):
     model = Tag
-    paginate_by = 10
+    paginate_by = 8
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -110,7 +114,7 @@ class TagDeleteView(
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
-    paginate_by = 5
+    paginate_by = 4
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
