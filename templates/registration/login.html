@@ -1,10 +1,26 @@
 {% extends "base.html" %}
 
+
 {% block content %}
   <h1>Login</h1>
+
   <form method="post" action="">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Login">
+
+    <div class="item-container">
+      <label class="label">Username</label>
+      <input type="text" name="username" class="text" required>
+    </div>
+
+    <div class="item-container">
+      <label class="label">Password</label>
+      <input type="password" name="password" class="text" required>
+    </div>
+
+    {% for error in form.errors.values %}
+      <span class="validation-error">{{ error }}</span>
+    {% endfor %}
+
+    <input type="submit" value="Login" class="btn btn-primary">
   </form>
 {% endblock %}

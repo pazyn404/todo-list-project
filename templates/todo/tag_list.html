@@ -1,17 +1,21 @@
 {% extends "base.html" %}
-{% load crispy_forms_filters %}
+
 
 {% block content %}
   <h1>
     Tag List
     <a href="{% url 'todo:tag-create' %}?name={{ request.GET.name }}&page={{ page_obj.number }}" class="btn btn-primary">Add tag</a>
   </h1>
+
   <br>
+
   <form action="" method="get" class="form-inline">
-    {{ search_form | crispy }}
-    <input type="submit" value="🚀" class="btn">
+    <input type="text" name="name" value="{{ search_form.fields.name.value }}" placeholder="Search by name" class="text">
+    <input type="submit" value="🚀" class="btn btn-primary btn-sm btn-search">
   </form>
+
   <br>
+
   {% if tag_list %}
     <ul class="list-group">
       {% for tag in tag_list %}

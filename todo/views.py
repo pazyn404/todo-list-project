@@ -28,8 +28,11 @@ def index_view(request: HttpRequest) -> HttpResponse:
     tasks = Task.objects.filter(Q(user_id=request.user.id) & Q(status=True))
     finished_tasks_count = tasks.count()
 
+    request.session["num_visits"] = request.session.get("num_visits", 0) + 1
+
     context = {
         "finished_tasks_count": finished_tasks_count,
+        "num_visits": request.session["num_visits"],
     }
 
     return render(request, "todo/index.html", context=context)
@@ -99,7 +102,7 @@ class TagDeleteView(
         per_page = int(self.request.GET["per_page"])
 
         count -= 1
-        if ceil(count / per_page) != page:
+        if ceil(count / per_page) < page:
             page = max(page - 1, 1)
 
         return f"{reverse('todo:tag-list')}?name={self.request.GET.get('name', '')}&page={page}"
@@ -169,7 +172,7 @@ class TaskDeleteView(
         per_page = int(self.request.GET["per_page"])
 
         count -= 1
-        if ceil(count / per_page) != page:
+        if ceil(count / per_page) < page:
             page = max(page - 1, 1)
 
         return f"{reverse('todo:task-list')}?name={self.request.GET.get('name', '')}&page={page}"

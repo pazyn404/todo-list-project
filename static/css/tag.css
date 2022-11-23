@@ -1,0 +1,8 @@
+.tag-list-item {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 10px;
+    background-color: #E0FFFF;
+}

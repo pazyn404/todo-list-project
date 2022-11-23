@@ -1,24 +1,22 @@
 {% extends "base.html" %}
 
+
 {% block content %}
-  <h3>{{ task.name }} details</h3>
+  <h3>{{ task.name }}</h3>
 
   <p><strong>Status:</strong> {{ task.status_display_name }}</p>
   <p><strong>Priority:</strong> {{ task.priority_display_name }}</p>
   <p><strong>Created at:</strong> {{ task.created_at }}</p>
   <p><strong>Deadline:</strong> {{ task.deadline }}</p>
 
-
   <p>
     <strong>Description:</strong>
     {% if task.description %}
       {{ task.description }}
-      {% else %}
-      <span>description was not provided</span>
+    {% else %}
+      <span>description is not provided</span>
     {% endif %}
   </p>
-
-
 
   <p>
     <strong>Tags:</strong>
@@ -26,8 +24,8 @@
       {% for tag in task.tags.all %}
         <span>{{ tag }}</span>
       {% endfor %}
-      {% else %}
-        <span>tags were not provided</span>
+    {% else %}
+        <span>tags is not provided</span>
     {% endif %}
   </p>
 

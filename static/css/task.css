@@ -1,0 +1,12 @@
+.task-list-item {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 10px;
+    background-color: #E0FFFF;
+}
+
+.expired_deadline {
+    color: red;
+}

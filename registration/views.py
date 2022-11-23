@@ -6,6 +6,7 @@ from django.urls import reverse_lazy, reverse
 from django.views import generic
 
 from registration.forms import UserCreateForm
+from registration.mixins import UserVerifyUrlDataMixin
 from registration.models import User
 
 
@@ -16,7 +17,7 @@ class UserCreateView(generic.CreateView):
     template_name = "registration/register.html"
 
 
-class UserUpdateView(LoginRequiredMixin, generic.UpdateView):
+class UserUpdateView(LoginRequiredMixin, UserVerifyUrlDataMixin, generic.UpdateView):
     model = User
     fields = ["username", "first_name", "last_name"]
     success_url = reverse_lazy("todo:index")
@@ -28,12 +29,9 @@ class UserUpdateView(LoginRequiredMixin, generic.UpdateView):
         return super().get(request, *args, **kwargs)
 
 
-class UserDeleteView(LoginRequiredMixin, generic.DeleteView):
+class UserDeleteView(LoginRequiredMixin, UserVerifyUrlDataMixin, generic.DeleteView):
     model = User
     success_url = reverse_lazy("registration:login")
-    extra_context = {
-        "successful_deletion_message": "Account was successfully deleted"
-    }
 
     def get(self, request, *args, **kwargs):
         if request.user.pk != kwargs["pk"]:

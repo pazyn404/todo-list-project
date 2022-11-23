@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load crispy_forms_filters %}
 
 
 {% block content %}
@@ -9,11 +8,13 @@
   </h1>
   <br>
   <form action="" method="get" class="form-inline">
-    {{ search_form | crispy }}
-    <input type="submit" value="🚀" class="btn">
+    <input type="text" name="name" value="{{ search_form.fields.name.value }}" placeholder="Search by name" class="text">
+    <input type="submit" value="🚀" class="btn btn-primary btn-sm btn-search">
   </form>
   <br>
+
   {% if task_list %}
+
     <ul class="list-group">
       {% for task in task_list %}
           <li class="list-group-item task-list-item">
@@ -47,6 +48,7 @@
           </li>
       {% endfor %}
     </ul>
+
   {% else %}
     <p><strong>No tasks, add new one!</strong></p>
   {% endif %}
