@@ -11,7 +11,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 
-from todo.forms import TaskForm, TagForm, TaskSearchForm, TagSearchForm
+from todo.forms import TaskForm, TagForm
 from todo.functions import get_page_number_after_deletion
 from todo.mixins import (
     TagVerifyUrlDataMixin,
@@ -46,22 +46,14 @@ class TagListView(LoginRequiredMixin, generic.ListView):
     model = Tag
     paginate_by = 8
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["search_form"] = TagSearchForm(
-            name=self.request.GET.get("name", "")
-        )
-        return context
-
     def get_queryset(self):
         queryset = Tag.objects.filter(user_id=self.request.user.id).order_by(
             "-created_at"
         )
 
-        form = TaskSearchForm(self.request.GET)
-
-        if form.is_valid():
-            return queryset.filter(name__icontains=form.cleaned_data["name"])
+        name = self.request.GET.get("name")
+        if name:
+            return queryset.filter(name__icontains=name)
 
         return queryset
 
@@ -113,22 +105,14 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
     paginate_by = 4
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["search_form"] = TaskSearchForm(
-            name=self.request.GET.get("name", "")
-        )
-        return context
-
     def get_queryset(self):
         queryset = Task.objects.filter(user_id=self.request.user.id).order_by(
             "-pinned", "-priority", "deadline"
         )
 
-        form = TaskSearchForm(self.request.GET)
-
-        if form.is_valid():
-            return queryset.filter(name__icontains=form.cleaned_data["name"])
+        name = self.request.GET.get("name")
+        if name:
+            return queryset.filter(name__icontains=name)
 
         return queryset
 

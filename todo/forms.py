@@ -28,19 +28,6 @@ class TagForm(forms.ModelForm):
         return name
 
 
-class TagSearchForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        name = kwargs.pop("name", "")
-        super().__init__(*args, **kwargs)
-
-        self.fields["name"] = forms.CharField(
-            max_length=255,
-            required=False,
-            label="",
-        )
-        self.fields["name"].value = name
-
-
 class TaskForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user")
@@ -67,16 +54,3 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ["name", "description", "deadline", "priority", "tags"]
-
-
-class TaskSearchForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        name = kwargs.pop("name", "")
-        super().__init__(*args, **kwargs)
-
-        self.fields["name"] = forms.CharField(
-            max_length=255,
-            required=False,
-            label="",
-        )
-        self.fields["name"].value = name
