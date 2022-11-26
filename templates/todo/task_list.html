@@ -7,8 +7,8 @@
     <a href="{% url 'todo:task-create' %}?name={{ request.GET.name }}&page={{ page_obj.number }}" class="btn btn-primary">Add task</a>
   </h1>
   <br>
-  <form action="" method="get" class="form-inline">
-    <input type="text" name="name" value="{{ search_form.fields.name.value }}" placeholder="Search by name" class="text">
+  <form action="{% url 'todo:task-list' %}" method="get" class="form-inline">
+    <input type="text" name="name" value="{{ request.GET.name }}" placeholder="Search by name" class="text">
     <input type="submit" value="🔍" class="btn btn-primary btn-sm btn-search">
   </form>
   <br>
