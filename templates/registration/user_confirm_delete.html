@@ -5,7 +5,7 @@
   <h1>Delete account</h1>
   <br>
 
-  <p>Please, enter password to delete account permanently?</p>
+  <p>Are you sure you want to delete your account permanently?</p>
 
   <form method="post" action="{% url 'registration:confirm-deletion' pk=user.pk %}">
     {% csrf_token %}
