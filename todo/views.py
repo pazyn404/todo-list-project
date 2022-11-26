@@ -1,5 +1,3 @@
-from math import ceil
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
@@ -14,6 +12,7 @@ from django.urls import reverse
 from django.views import generic
 
 from todo.forms import TaskForm, TagForm, TaskSearchForm, TagSearchForm
+from todo.functions import get_page_number_after_deletion
 from todo.mixins import (
     TagVerifyUrlDataMixin,
     TaskVerifyUrlDataMixin,
@@ -33,6 +32,7 @@ def index_view(request: HttpRequest) -> HttpResponse:
     context = {
         "finished_tasks_count": finished_tasks_count,
         "num_visits": request.session["num_visits"],
+        "test": "data",
     }
 
     return render(request, "todo/index.html", context=context)
@@ -101,15 +101,12 @@ class TagDeleteView(
     model = Tag
 
     def get_success_url(self):
-        page = int(self.request.GET["page"])
-        count = int(self.request.GET["count"])
-        per_page = int(self.request.GET["per_page"])
+        page = int(self.request.GET.get("page", 1))
+        count = int(self.request.GET.get("count", 1))
+        per_page = int(self.request.GET.get("per_page", 1))
 
-        count -= 1
-        if ceil(count / per_page) < page:
-            page = max(page - 1, 1)
-
-        return f"{reverse('todo:tag-list')}?name={self.request.GET.get('name', '')}&page={page}"
+        new_page = get_page_number_after_deletion(page, count, per_page)
+        return f"{reverse('todo:tag-list')}?name={self.request.GET.get('name', '')}&page={new_page}"
 
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
@@ -171,15 +168,12 @@ class TaskDeleteView(
     model = Task
 
     def get_success_url(self):
-        page = int(self.request.GET["page"])
-        count = int(self.request.GET["count"])
-        per_page = int(self.request.GET["per_page"])
+        page = int(self.request.GET.get("page", 1))
+        count = int(self.request.GET.get("count", 1))
+        per_page = int(self.request.GET.get("per_page", 1))
 
-        count -= 1
-        if ceil(count / per_page) < page:
-            page = max(page - 1, 1)
-
-        return f"{reverse('todo:task-list')}?name={self.request.GET.get('name', '')}&page={page}"
+        new_page = get_page_number_after_deletion(page, count, per_page)
+        return f"{reverse('todo:task-list')}?name={self.request.GET.get('name', '')}&page={new_page}"
 
 
 def change_status_view(request, pk: int):

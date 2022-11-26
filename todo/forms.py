@@ -21,7 +21,9 @@ class TagForm(forms.ModelForm):
         name = self.cleaned_data["name"]
 
         if Tag.objects.filter(Q(user_id=self.user.id) & Q(name=name)).exists():
-            raise ValidationError("This tag is already represented in your list!")
+            raise ValidationError(
+                "This tag is already represented in your list!"
+            )
 
         return name
 
@@ -53,10 +55,14 @@ class TaskForm(forms.ModelForm):
 
         if self.instance.id is not None:
             self.fields["name"].value = self.instance.name
-            self.fields["deadline"].value = self.instance.deadline.strftime("%Y-%m-%dT%H:%M")
+            self.fields["deadline"].value = self.instance.deadline.strftime(
+                "%Y-%m-%dT%H:%M"
+            )
             self.fields["description"].value = self.instance.description
             self.fields["priority"].value = self.instance.priority
-            self.fields["tags"].values = {tag.id: tag for tag in self.instance.tags.all()}
+            self.fields["tags"].values = {
+                tag.id: tag for tag in self.instance.tags.all()
+            }
 
     class Meta:
         model = Task

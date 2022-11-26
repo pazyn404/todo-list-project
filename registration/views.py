@@ -17,7 +17,9 @@ class UserCreateView(generic.CreateView):
     template_name = "registration/register.html"
 
 
-class UserUpdateView(LoginRequiredMixin, UserVerifyUrlDataMixin, generic.UpdateView):
+class UserUpdateView(
+    LoginRequiredMixin, UserVerifyUrlDataMixin, generic.UpdateView
+):
     model = User
     fields = ["username", "first_name", "last_name"]
     success_url = reverse_lazy("todo:index")
@@ -29,7 +31,9 @@ class UserUpdateView(LoginRequiredMixin, UserVerifyUrlDataMixin, generic.UpdateV
         return super().get(request, *args, **kwargs)
 
 
-class UserDeleteView(LoginRequiredMixin, UserVerifyUrlDataMixin, generic.DeleteView):
+class UserDeleteView(
+    LoginRequiredMixin, UserVerifyUrlDataMixin, generic.DeleteView
+):
     model = User
     success_url = reverse_lazy("registration:login")
 

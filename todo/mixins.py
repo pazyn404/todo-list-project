@@ -23,7 +23,7 @@ class TaskVerifyUrlDataMixin:
 class FormKwargsMixin:
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs.update({"user": self.request.user})
+        kwargs["user"] = self.request.user
         return kwargs
 
 
