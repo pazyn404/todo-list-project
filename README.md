@@ -9,4 +9,4 @@ https://todo-list-khvs.onrender.com/
 <img height="1080" src="D:\todo_list.png" width="1920"/>
 <img height="1080" src="D:\tag_list.png" width="1920"/>
 <img height="1080" src="D:\settings.png" width="1920"/>
-<img height="1080" src="D:\delete.png" width="1920"/>
+<img height="1080" src="D:\deletion.png" width="1920"/>
