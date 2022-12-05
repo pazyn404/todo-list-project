@@ -13,12 +13,16 @@
 
   <br>
 
-  {% if finished_tasks_count > 1 %}
-    <h3>You have already {{ finished_tasks_count }} finished tasks!</h3>
-  {% elif finished_tasks_count == 1 %}
-    <h3>You have already {{ finished_tasks_count }} finished task!</h3>
+  {% if tasks_count == 0 %}
+    <h3>Create new task and finish it!</h3>
   {% else %}
-    <h3>You have no finished task yet, fix it!</h3>
+    {% if finished_tasks_count > 1 %}
+      <h3>You have already {{ finished_tasks_count }} finished tasks!</h3>
+    {% elif finished_tasks_count == 1 %}
+      <h3>You have already {{ finished_tasks_count }} finished task!</h3>
+    {% else %}
+      <h3>You have no finished task yet, fix it!</h3>
+    {% endif %}
   {% endif %}
 
 

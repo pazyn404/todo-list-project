@@ -1,3 +1,4 @@
+from textwrap import shorten
 from datetime import datetime
 
 from django.contrib.auth.models import AbstractUser
@@ -52,6 +53,10 @@ class Task(models.Model):
     priority = models.IntegerField(default=3, choices=PRIORITY_CHOICES)
     pinned = models.BooleanField(default=False)
     tags = models.ManyToManyField("Tag", related_name="tasks")
+
+    @property
+    def shorten_description(self) -> str:
+        return shorten(self.description, width=50, placeholder="...")
 
     @property
     def status_display_name(self) -> str:
