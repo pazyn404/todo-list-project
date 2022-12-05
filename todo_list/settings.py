@@ -27,7 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "awwid0#x(nr))rk7yeu*1=vjvo3pt0^s0-vwz1q_o$l*)$&p!!")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
+# DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
+
+DEBUG = True
 
 ALLOWED_HOSTS = ["127.0.0.1", "todo-list-khvs.onrender.com"]
 

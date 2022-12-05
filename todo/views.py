@@ -1,5 +1,7 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.http import (
     HttpResponseRedirect,
@@ -24,12 +26,13 @@ from todo.models import Tag, Task
 
 @login_required
 def index_view(request: HttpRequest) -> HttpResponse:
-    tasks = Task.objects.filter(Q(user_id=request.user.id) & Q(status=True))
-    finished_tasks_count = tasks.count()
+    tasks_count = Task.objects.filter(user_id=request.user.id).count()
+    finished_tasks_count = Task.objects.filter(Q(user_id=request.user.id) & Q(status=True)).count()
 
     request.session["num_visits"] = request.session.get("num_visits", 0) + 1
 
     context = {
+        "tasks_count": tasks_count,
         "finished_tasks_count": finished_tasks_count,
         "num_visits": request.session["num_visits"],
         "test": "data",
@@ -39,7 +42,7 @@ def index_view(request: HttpRequest) -> HttpResponse:
 
 
 def about_view(request: HttpRequest) -> HttpResponse:
-    return render(request, "footer/about.html")
+    return render(request, "todo/about.html")
 
 
 class TagListView(LoginRequiredMixin, generic.ListView):
@@ -65,10 +68,11 @@ class TagDetailView(
 
 
 class TagCreateView(
-    LoginRequiredMixin, FormKwargsMixin, FormValidMixin, generic.CreateView
+    LoginRequiredMixin, SuccessMessageMixin, FormKwargsMixin, FormValidMixin, generic.CreateView
 ):
     form_class = TagForm
     template_name = "todo/tag_form.html"
+    success_message = "Tag was successfully created"
 
     def get_success_url(self):
         return f"{reverse('todo:tag-list')}?name={self.request.GET.get('name', '')}&page={self.request.GET.get('page', 1)}"
@@ -77,11 +81,13 @@ class TagCreateView(
 class TagUpdateView(
     LoginRequiredMixin,
     TagVerifyUrlDataMixin,
+    SuccessMessageMixin,
     FormKwargsMixin,
     generic.UpdateView,
 ):
     model = Tag
     form_class = TagForm
+    success_message = "Tag was successfully updated"
 
     def get_success_url(self):
         return f"{reverse('todo:tag-list')}?name={self.request.GET.get('name', '')}&page={self.request.GET.get('page', 1)}"
@@ -98,6 +104,8 @@ class TagDeleteView(
         per_page = int(self.request.GET.get("per_page", 1))
 
         new_page = get_page_number_after_deletion(page, count, per_page)
+
+        messages.add_message(self.request, messages.SUCCESS, "Tag was successfully deleted")
         return f"{reverse('todo:tag-list')}?name={self.request.GET.get('name', '')}&page={new_page}"
 
 
@@ -124,10 +132,11 @@ class TaskDetailView(
 
 
 class TaskCreateView(
-    LoginRequiredMixin, FormKwargsMixin, FormValidMixin, generic.CreateView
+    LoginRequiredMixin, SuccessMessageMixin, FormKwargsMixin, FormValidMixin, generic.CreateView
 ):
     form_class = TaskForm
     template_name = "todo/task_form.html"
+    success_message = "Task was successfully created"
 
     def get_success_url(self):
         return f"{reverse('todo:task-list')}?name={self.request.GET.get('name', '')}&page={self.request.GET['page']}"
@@ -136,11 +145,13 @@ class TaskCreateView(
 class TaskUpdateView(
     LoginRequiredMixin,
     TaskVerifyUrlDataMixin,
+    SuccessMessageMixin,
     FormKwargsMixin,
     generic.UpdateView,
 ):
     model = Task
     form_class = TaskForm
+    success_message = "Task was successfully updated"
 
     def get_success_url(self):
         return f"{reverse('todo:task-list')}?name={self.request.GET.get('name', '')}&page={self.request.GET['page']}"
@@ -157,6 +168,8 @@ class TaskDeleteView(
         per_page = int(self.request.GET.get("per_page", 1))
 
         new_page = get_page_number_after_deletion(page, count, per_page)
+
+        messages.add_message(self.request, messages.SUCCESS, "Task was successfully deleted")
         return f"{reverse('todo:task-list')}?name={self.request.GET.get('name', '')}&page={new_page}"
 
 
